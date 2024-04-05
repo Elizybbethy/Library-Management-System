@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 style="text-align: center; margin: 15px;">Fill in the form to add a new user.</h3>
+<form method="post" enctype="multipart/form-data" action="#" id="myform">
+    
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-secondary" style="background-color: boolywood; color:#fff; width:100px">Add</button>
+</form>
+
+{% endblock %}

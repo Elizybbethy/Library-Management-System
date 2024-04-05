@@ -1,0 +1,45 @@
+#welcomepage {
+    background-image: url(../images/background.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.welcome {
+    text-align: center;
+    color: brown;
+    margin: 6%;
+    font-size: 30px;
+}
+.start {
+    align-items: center;
+    margin: 6%;
+    justify-content: center;
+    display: flex;
+}
+.btn {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    background-color: burlywood;
+    border-radius: 10px;
+    text-align: center;
+}
+
+footer {
+    background-color: black;
+    color: azure;
+    height: 35px;
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+form {
+    margin: 15px 600px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+}
