@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 # Create your models here.
@@ -10,3 +11,31 @@ class Register(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Book(models.Model):
+    Title = models.CharField(max_length=100, blank=False, null=False)
+    genre = models.CharField(max_length=50, blank=False, null=False)
+    availablility = models.BooleanField(default=True)
+    copies_number = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.Title
+    
+class BorrowedBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    client_name = models.CharField(max_length=100, blank=False, null=False)
+    book_copies = models.IntegerField(default=1)
+    borrow_date = models.DateTimeField(default=timezone.now)
+    return_date = models.DateTimeField(null=True, blank=True)
+    fine_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    returned = models.BooleanField(default=False)
+    
+    def save(self, **args):
+        if not self.pk:
+            self.book.copies_number -= 1
+            self.book.save()
+        super().save(**args)
+
+    def __str__(self):
+        return str(self.book)

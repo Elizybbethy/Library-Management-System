@@ -1,25 +1,27 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="container">
-  <h4 style="text-align: center; margin: 15px">All registered users</h4>
+  <h4 style="text-align: center; margin: 15px">All Borrowed Books</h4>
   <table id="userTable" class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Phone Number</th>
+        <th>Client Name</th>
+        <th>Book Title </th>
+        <th>Borrow Date</th>
+        <th>Book Copies</th>
+        <th>Return Date</th>
+        <th>Return Status</th>
       </tr>
     </thead>
     <tbody>
-      {% for user in users %}
+      {% for book in borrowed_books %}
       <tr>
-        <td>{{user.name}}</td>
-        <td>{{user.age}}</td>
-        <td>{{user.address}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.phone}}</td>
+        <td>{{book.client_name}}</td>
+        <td>{{book.Title}}</td>
+        <td>{{book.borrow_date}}</td>
+        <td>{{book.book_copies}}</td>
+        <td>{{book.return_date}}</td>
+        <td>{{book.returned}}</td>
       </tr>
       {% endfor %}
     </tbody>
