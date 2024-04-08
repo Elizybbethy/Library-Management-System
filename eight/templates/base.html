@@ -24,7 +24,7 @@
       style="background-color: #384e49"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" style="color: #fff; font-weight: bold" href="#"
+        <a class="navbar-brand" style="color: #fff; font-weight: bold" href="{% url 'home'%}"
           >LBM</a
         >
         <button
@@ -82,13 +82,13 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'borrow' %}"
-                    >Borrow Book</a
+                  <a class="dropdown-item" href="{% url 'all_books' %}"
+                    >All Books</a
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'all_books' %}"
-                    >All Books</a
+                  <a class="dropdown-item" href="{% url 'borrow' %}"
+                    >Borrow Book</a
                   >
                 </li>
                 <li>

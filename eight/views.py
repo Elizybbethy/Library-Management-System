@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 
 from .models import Book, BorrowedBook, Register
 from .forms import BorrowBookForm, RegisterBook, RegisterUserForm
@@ -8,6 +8,7 @@ from .forms import BorrowBookForm, RegisterBook, RegisterUserForm
 def homepage(request):
     return render(request, 'home.html')
 
+#This view handles user registration
 def RegisterUser(request):
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
@@ -18,26 +19,43 @@ def RegisterUser(request):
         form = RegisterUserForm()
     return render(request, 'add_user.html', {'form': form})
 
+#This view is querying all the registered users
 def allUsers(request):
     users_data = Register.objects.all()
     return render(request, 'all_users.html',{'users':users_data})
 
+#This view handles book registration
 def addBook(request):
     if request.method == 'POST':
         form = RegisterBook(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('all_books')
+            title = form.cleaned_data['Title']
+            genre = form.cleaned_data['genre']
+            copies_number = form.cleaned_data['copies_number']
+            availability = form.cleaned_data['availability']  
+            existing_book = Book.objects.filter(Title=title, genre=genre).first()
+            if existing_book:
+                # If the book already exists update the copies_number and availability
+                existing_book.copies_number += copies_number
+                existing_book.availability = availability
+                existing_book.save()
+            else:
+                # If the book doesn't exist, a new record is created
+                form.save()
+            return redirect("all_books")
+        else:
+            print(form.errors)
     else:
         form = RegisterBook()
     return render(request, 'books/add_book.html', {'form': form})
+
 
 def allBooks(request):
     books_data = Book.objects.all()
     return render(request, 'books/all_books.html', {'books': books_data})
 
 
-#These views handle the book borrowing request
+#This view handle the book borrowing request
 def borrowBook(request):
     if request.method == 'POST':
         form = BorrowBookForm(request.POST)
@@ -56,16 +74,14 @@ def borrowBook(request):
 
 
 
-
+#This view is for all borrowed books
 def borrowedBooks(request):
     borrowed_books_data = BorrowedBook.objects.all()
     return render(request, 'books/borrowed_book.html', {'borrowed_books': borrowed_books_data})
 
-def borrowFail(request):
-    return render(request, 'books/borrow_fail.html')
 
 
-#These views handle the book Return 
+#This view handle the book Return 
 def returnBook(request, pk):
     record = BorrowedBook.objects.get(id=pk)
     if record.user == request.user and not record.returned:
@@ -77,24 +93,9 @@ def returnBook(request, pk):
         return redirect('book_return-fail')
     
 
-def returnSuccess(request):
-    return render(request, 'return_success.html')
-
-def returnFailure(request):
-    return render(request, 'return_fail.html')
 
 
-# def borrowBook(request, book_id):
-#     book = Book.objects.get(id=book_id)
-#     if request.method == 'POST':
-#         form = BorrowBookForm(request.POST)
-#         if form.is_valid():
-#             # client = form.cleaned_data['client_name']
-#             # BorrowedBook.objects.create( client=client)
-#             form.save()
-#             return redirect('borrowed_book')
-#     else:
-#         form = BorrowBookForm()
-#     return render(request, 'books/borrow_book.html', {'form': form})
+
+
 
 

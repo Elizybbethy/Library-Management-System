@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterUser, addBook, allBooks, allUsers, borrowBook, borrowFail, borrowedBooks, homepage, returnBook, returnFailure, returnSuccess
+from .views import RegisterUser, addBook, allBooks, allUsers, borrowBook, borrowedBooks, homepage, returnBook
 
 urlpatterns = [
     path('', homepage, name="home"),
@@ -15,10 +15,9 @@ urlpatterns = [
     #These urls are for book borrowing related routes
     path('borrow/', borrowBook, name="borrow"),
     path('borrowed/', borrowedBooks, name="borrowed_book"),
-    path('borrow/fail', borrowFail, name="borrow_fail"),
+ 
 
     #The urls are for borrowed book returns
     path('return', returnBook, name="return"),
-    path('return/success', returnSuccess, name="return_success"),
-    path('return/fail', returnFailure, name="return_fail"),
+
 ]

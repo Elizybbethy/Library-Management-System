@@ -13,7 +13,7 @@ class RegisterBook(forms.ModelForm):
             "Title",
             "genre",
             "copies_number",
-            "availablility",
+            "availability",
         ]
 
 class DateInput(forms.DateInput):
