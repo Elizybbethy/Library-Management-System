@@ -1,5 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
+from django.db.models import Count
+from django.utils import timezone
 
 from .models import Book, BorrowedBook, Register
 from .forms import BorrowBookForm, RegisterBook, RegisterUserForm
@@ -22,7 +24,8 @@ def RegisterUser(request):
 #This view is querying all the registered users
 def allUsers(request):
     users_data = Register.objects.all()
-    return render(request, 'all_users.html',{'users':users_data})
+    user_count = users_data.count()
+    return render(request, 'all_users.html',{'users':users_data, 'user_count': user_count})
 
 #This view handles book registration
 def addBook(request):
@@ -52,7 +55,8 @@ def addBook(request):
 
 def allBooks(request):
     books_data = Book.objects.all()
-    return render(request, 'books/all_books.html', {'books': books_data})
+    total_books = books_data.count()
+    return render(request, 'books/all_books.html', {'books': books_data, 'total_books': total_books, })
 
 
 #This view handle the book borrowing request
@@ -81,7 +85,7 @@ def borrowedBooks(request):
 
 
 
-#This view handle the book Return 
+#This view handles the book Return 
 def returnBook(request, pk):
     record = BorrowedBook.objects.get(id=pk)
     if record.user == request.user and not record.returned:
@@ -93,7 +97,26 @@ def returnBook(request, pk):
         return redirect('book_return-fail')
     
 
-
+#This view handles the summary of inventory
+def inventory(request):
+    total_books = Book.objects.count() # for total books
+    user_count = Register.objects.count() # for Users 
+    available_books = Book.objects.filter(availability=True) # Available books for borrowing
+    # for overdue books and a client 
+    overdue_books = BorrowedBook.objects.filter(return_date__isnull=False, return_date__lt=timezone.now())
+    # for popular book in the library
+    popular_book = Book.objects.annotate(num_borrowed=Count('borrowedbook')).order_by('-num_borrowed').first()
+    #for popular genre in the library
+    popular_genre = Book.objects.values('genre').annotate(num_books=Count('id')).order_by('-num_books').first()
+    context = {
+        'total_books': total_books,
+        'user_count': user_count,
+        'available_books': available_books,
+        'overdue_books': overdue_books,
+        'popular_book': popular_book,
+        'popular_genre': popular_genre['genre'] if popular_genre else None
+    }
+    return render(request, 'inventory.html', context)
 
 
 

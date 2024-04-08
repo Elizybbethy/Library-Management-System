@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import RegisterUser, addBook, allBooks, allUsers, borrowBook, borrowedBooks, homepage, returnBook
+from .views import RegisterUser, addBook, allBooks, allUsers, borrowBook, borrowedBooks, homepage, inventory, returnBook
 
 urlpatterns = [
     path('', homepage, name="home"),
-
+    path('invent/', inventory, name="inventory_list"),
     #These urls are for user related routes
     path('user_add', RegisterUser, name="user_add"),
     path('all_users/', allUsers, name="all_users"),

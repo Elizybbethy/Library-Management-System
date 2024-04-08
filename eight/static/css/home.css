@@ -16,6 +16,15 @@
     justify-content: center;
     display: flex;
 }
+
+.navbar {
+    background-color: #384e49;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
 .btn {
         display: inline-block;
         padding: 0.5em 1em;
@@ -50,4 +59,10 @@ form {
     border-radius: 10px;
     padding: 20px;
     width: 300px;
+}
+
+body {
+    padding-top: 56px;
+    padding-bottom: 56px;
+
 }
